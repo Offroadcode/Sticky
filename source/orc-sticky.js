@@ -7,6 +7,8 @@
 var orcSticky = {
     activeStickyClass: 'sticky',
     stickyStyles: "top: 0; position: fixed;",
+    onStick: false,
+    onUnstick: false,
     stickies: [],
     /**
      * @class StickyElement
@@ -121,6 +123,12 @@ var orcSticky = {
             if (options.styles !== undefined) {
                 orcSticky.stickyStyles = options.styles;
             }
+            if (options.onStick !== undefined) {
+                orcSticky.onStick = options.onStick;
+            }
+            if (options.onUnstick !== undefined) {
+                orcSticky.onUnstick = options.onUnstick;
+            }
         }
     },
     /**
@@ -142,6 +150,9 @@ var orcSticky = {
         sticky.elem.setAttribute("style", style);
         sticky.elem.parentNode.insertBefore(sticky.placeholder, sticky.elem);
         orcSticky.stickies[sticky.index].isAdded = true;
+        if (orcSticky.onStick) {
+            orcSticky.onStick(sticky.elem);
+        }
     },
     /**
      * @method unstickSticky
@@ -158,5 +169,8 @@ var orcSticky = {
         }
         sticky.elem.parentNode.removeChild(sticky.placeholder);
         orcSticky.stickies[sticky.index].isAdded = false;
+        if (orcSticky.onUnstick) {
+            orcSticky.onUnstick(sticky.elem);
+        }
     }
 };
